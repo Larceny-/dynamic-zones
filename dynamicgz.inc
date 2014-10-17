@@ -44,7 +44,7 @@
 #define _dzones_included
 
 #if !defined MAX_GANG_ZONES
-	#define MAX_GANG_ZONES		(1024)
+	#define MAX_GANG_ZONES		1024
 #endif
 
 // Functions list
