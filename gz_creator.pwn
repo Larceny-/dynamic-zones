@@ -2,11 +2,11 @@
 
 #define FILTERSCRIPT
 
-#include "../include/dynamicgz.inc"
+#include "dynamicgz.inc"
 
 #define DIALOG_ZONE_CREATOR		4571
 
-#define DIALOG_TITLE			"GANGZONE CREATOR v0.1"
+#define DIALOG_TITLE			"GANGZONE CREATOR v0.2"
 
 #define PlaySelectSound(%0)		PlayerPlaySound(%0,1083,0.0,0.0,0.0)
 #define PlayCancelSound(%0)		PlayerPlaySound(%0,1084,0.0,0.0,0.0)
@@ -87,11 +87,10 @@ public OnPlayerCommandText(playerid, cmdtext[])
     if(!strcmp(cmdtext, "/creategz", true))
     {
     	PlaySelectSound(playerid);
-        ShowPlayerDialog(playerid, DIALOG_ZONE_CREATOR, DIALOG_STYLE_LIST, DIALOG_TITLE, "1.\tCreate", "Select", "Cancel");
-
-        g_IsPlayerCreatingZone[playerid] = false;
-		g_PlayerFistZone[playerid][0] = 0.0;
-		g_PlayerFistZone[playerid][1] = 0.0;
+        
+        //if(g_IsPlayerCreatingZone[playerid] == false) ShowPlayerDialog(playerid, DIALOG_ZONE_CREATOR, DIALOG_STYLE_LIST, DIALOG_TITLE, "1.\tCreate", "Select", "Cancel");
+        if(g_IsPlayerCreatingZone[playerid] == false) ShowPlayerDialog(playerid, DIALOG_ZONE_CREATOR+1, DIALOG_STYLE_LIST, DIALOG_TITLE, "1.\tGangZone Position", "Select", "Back");
+        else ShowPlayerDialog(playerid, DIALOG_ZONE_CREATOR+1, DIALOG_STYLE_LIST, DIALOG_TITLE, "1.\tGangZone Position\n2.\tGangZone Color\n3.\tExport", "Select", "Back");
         return 1;
     }
     return 0;
@@ -118,9 +117,6 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			{
 				PlayCancelSound(playerid);
 				ShowPlayerDialog(playerid, DIALOG_ZONE_CREATOR, DIALOG_STYLE_LIST, DIALOG_TITLE, "1.\tCreate", "Select", "Cancel");
-				g_IsPlayerCreatingZone[playerid] = false;
-				g_PlayerFistZone[playerid][0] = 0.0;
-				g_PlayerFistZone[playerid][1] = 0.0;
 				return 1;
 			}
 
@@ -148,7 +144,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 						return 1;
 					}
 
-					SendClientMessage(playerid, 0xA9C4E4FF, "Gangzone exported to created_gangzones.txt");
+					SendClientMessage(playerid, 0xA9C4E4FF, "Exported to created_gangzones.txt");
+					SendClientMessage(playerid, 0xFFFFFFFF, "Now you can create a new gang zone.");
 					
 					new string[128];
 					new File:pos = fopen("created_gangzones.txt", io_append);
@@ -156,6 +153,12 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
         			fwrite(pos, string);
         			fclose(pos);
 
+        			DestroyDynamicZone(g_PlayerCreatingZoneID[playerid]);
+
+        			g_PlayerCreatingZoneID[playerid] = INVALID_GANG_ZONE;
+        			g_IsPlayerCreatingZone[playerid] = false;
+        			g_PlayerFistZone[playerid][0] = 0.0;
+        			g_PlayerFistZone[playerid][1] = 0.0;
 				}
 			}
 		}
