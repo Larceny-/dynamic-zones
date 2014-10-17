@@ -245,18 +245,19 @@ stock FlashDynamicZoneForAll(zoneid, color)
 	if(g_DynamicZone[zoneid][E_GANG_ZONE_ID] == INVALID_GANG_ZONE)
 		return 0;
 
-	new PVarString[12][2];
-	format(PVarString[0], sizeof(PVarString[0]), "vszone_%i", zoneid);
-	format(PVarString[1], sizeof(PVarString[1]), "fszone_%i", zoneid);
+	new PVarString[12];
+	new PVarFlashing[12];
+	format(PVarString, sizeof(PVarString), "vszone_%i", zoneid);
+	format(PVarFlashing, sizeof(PVarFlashing), "fszone_%i", zoneid);
     for(new slots = GetMaxPlayers(), i; i < slots; i++)
 	{
 	    if(!IsPlayerConnected(i))
 	        continue;
 
-		if(GetPVarInt(i, PVarString[0]))
+		if(GetPVarInt(i, PVarString))
 		{
 			GangZoneFlashForPlayer(i, g_DynamicZone[zoneid][E_GANG_ZONE_ID], color);
-			SetPVarInt(i, PVarString[1], 1);
+			SetPVarInt(i, PVarFlashing, 1);
 		}
 	}
 	return 1;
@@ -267,18 +268,19 @@ stock StopFlashDynamicZoneForAll(zoneid)
 	if(g_DynamicZone[zoneid][E_GANG_ZONE_ID] == INVALID_GANG_ZONE)
 		return 0;
 
-	new PVarString[12][2];
-	format(PVarString[0], sizeof(PVarString[0]), "vszone_%i", zoneid);
-	format(PVarString[1], sizeof(PVarString[1]), "fszone_%i", zoneid);
+	new PVarString[12];
+	new PVarFlashing[12];
+	format(PVarString, sizeof(PVarString), "vszone_%i", zoneid);
+	format(PVarFlashing, sizeof(PVarFlashing), "fszone_%i", zoneid);
     for(new slots = GetMaxPlayers(), i; i < slots; i++)
 	{
 	    if(!IsPlayerConnected(i))
 	        continue;
 
-		if(GetPVarInt(i, PVarString[0]))
+		if(GetPVarInt(i, PVarString))
 		{
 			GangZoneStopFlashForPlayer(i, g_DynamicZone[zoneid][E_GANG_ZONE_ID], color);
-			DeletePVar(i, PVarString[1]);
+			DeletePVar(i, PVarFlashing);
 		}
 	}
 	return 1;
@@ -292,13 +294,14 @@ stock FlashDynamicZoneForPlayer(playerid, zoneid, color)
 	if(!IsPlayerConnected(playerid))
 		return 0;
 
-	new PVarString[12][2];
-	format(PVarString[0], sizeof(PVarString[0]), "vszone_%i", zoneid);
-	format(PVarString[1], sizeof(PVarString[1]), "fszone_%i", zoneid);
-	if(GetPVarInt(playerid, PVarString[0]))
+	new PVarString[12];
+	new PVarFlashing[12];
+	format(PVarString, sizeof(PVarString), "vszone_%i", zoneid);
+	format(PVarFlashing, sizeof(PVarFlashing), "fszone_%i", zoneid);
+	if(GetPVarInt(playerid, PVarString))
 	{
 		GangZoneFlashForPlayer(playerid, g_DynamicZone[zoneid][E_GANG_ZONE_ID], color);
-		SetPVarInt(playerid, PVarString[1], 1);
+		SetPVarInt(playerid, PVarFlashing, 1);
 	}
 	return 1;
 }
@@ -311,13 +314,14 @@ stock StopFlashDynamicZoneForPlayer(playerid, zoneid)
 	if(!IsPlayerConnected(playerid))
 		return 0;
 
-	new PVarString[12][2];
-	format(PVarString[0], sizeof(PVarString[0]), "vszone_%i", zoneid);
-	format(PVarString[1], sizeof(PVarString[1]), "fszone_%i", zoneid);
-	if(GetPVarInt(playerid, PVarString[0]))
+	new PVarString[12];
+	new PVarFlashing[12];
+	format(PVarString, sizeof(PVarString), "vszone_%i", zoneid);
+	format(PVarFlashing, sizeof(PVarFlashing), "fszone_%i", zoneid);
+	if(GetPVarInt(playerid, PVarString))
 	{
-		GangZoneStopFlashForPlayer(playerid, g_DynamicZone[zoneid][E_GANG_ZONE_ID], color);
-		DeletePVar(playerid, PVarString[1]);
+		GangZoneStopFlashForPlayer(playerid, g_DynamicZone[zoneid][E_GANG_ZONE_ID]);
+		DeletePVar(playerid, PVarFlashing);
 	}
 	return 1;
 }
@@ -400,12 +404,12 @@ public DynamicZonesTimer()
 			format(PVarString, sizeof(PVarString), "etzone_%i", z);
 			if(IsPlayerInDynamicZone(i, z) && !GetPVarInt(i, PVarString))
 			{
-				CallLocalFunction("OnPlayerEnterDynamicZone", "ii",	i, PVarString);
+				CallLocalFunction("OnPlayerEnterDynamicZone", "ii",	i, z);
 				SetPVarInt(i, PVarString, 1);
 			}
 			else if(!IsPlayerInDynamicZone(i, z) && GetPVarInt(i, PVarString))
 			{
-				CallLocalFunction("OnPlayerExitDynamicZone", "ii", i, PVarString);
+				CallLocalFunction("OnPlayerLeaveDynamicZone", "ii", i, z);
 				DeletePVar(i, PVarString);
 			}
 		}
@@ -505,4 +509,4 @@ public DynamicZonesTimer()
 #undef swap
 
 forward OnPlayerEnterDynamicZone(playerid, zoneid);
-forward OnPlayerExitDynamicZone(playerid, zoneid);
+forward OnPlayerLeaveDynamicZone(playerid, zoneid);
