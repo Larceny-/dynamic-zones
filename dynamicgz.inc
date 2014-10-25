@@ -81,7 +81,7 @@ enum E_GANG_ZONE
 }
 static stock
 	g_DynamicZone[MAX_GANG_ZONES][E_GANG_ZONE],
-	g_TotalGangzones, // Total of created gang zones
+	//g_TotalGangzones, // Total of created gang zones
 	g_TimerIndex;
 
 //------------------------------------------------------------------------------
@@ -117,7 +117,7 @@ stock CreateDynamicZone(Float:minx, Float:miny, Float:maxx, Float:maxy, color = 
 	g_DynamicZone[zoneid][E_GANG_ZONE_MAXX]		= maxx;
 	g_DynamicZone[zoneid][E_GANG_ZONE_MAXY]		= maxy;
 
-	g_TotalGangzones++;
+	//g_TotalGangzones++;
 	return zoneid;
 }
 
@@ -127,7 +127,7 @@ stock DestroyDynamicZone(zoneid)
 		return 0;
 
     GangZoneDestroy(g_DynamicZone[zoneid][E_GANG_ZONE_ID]);
-	g_TotalGangzones--;
+	//g_TotalGangzones--;
     return 1;
 }
 
@@ -279,7 +279,7 @@ stock StopFlashDynamicZoneForAll(zoneid)
 
 		if(GetPVarInt(i, PVarString))
 		{
-			GangZoneStopFlashForPlayer(i, g_DynamicZone[zoneid][E_GANG_ZONE_ID], color);
+			GangZoneStopFlashForPlayer(i, g_DynamicZone[zoneid][E_GANG_ZONE_ID], g_DynamicZone[zoneid][E_GANG_ZONE_COLOR]);
 			DeletePVar(i, PVarFlashing);
 		}
 	}
@@ -399,7 +399,8 @@ public DynamicZonesTimer()
 	    if(!IsPlayerConnected(i))
 	        continue;
 
-		for(new z = 0; z < g_TotalGangzones; z++)
+		//for(new z = 0; z < g_TotalGangzones; z++)
+		for(new z = 0; z < MAX_GANG_ZONES; z++)
 		{
 			format(PVarString, sizeof(PVarString), "etzone_%i", z);
 			if(IsPlayerInDynamicZone(i, z) && !GetPVarInt(i, PVarString))
