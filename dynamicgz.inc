@@ -425,7 +425,7 @@ public DynamicZonesTimer()
 		{
 			g_DynamicZone[z][E_GANG_ZONE_ID] = INVALID_GANG_ZONE;
 		}
-		g_TimerIndex = SetTimer("DynamicZonesTimer", 1000, true);
+		g_TimerIndex = SetTimer("DynamicZonesTimer", 2500, true);
 		#if defined dyZones_OnFilterScriptInit
 			return dyZones_OnFilterScriptInit();
 		#else
@@ -469,7 +469,7 @@ public DynamicZonesTimer()
 		{
 			g_DynamicZone[z][E_GANG_ZONE_ID] = INVALID_GANG_ZONE;
 		}
-		g_TimerIndex = SetTimer("DynamicZonesTimer", 1000, true);
+		g_TimerIndex = SetTimer("DynamicZonesTimer", 2500, true);
 		#if defined dyZones_OnGameModeInit
 			return dyZones_OnGameModeInit();
 		#else
