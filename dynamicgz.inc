@@ -279,7 +279,7 @@ stock StopFlashDynamicZoneForAll(zoneid)
 
 		if(GetPVarInt(i, PVarString))
 		{
-			GangZoneStopFlashForPlayer(i, g_DynamicZone[zoneid][E_GANG_ZONE_ID], g_DynamicZone[zoneid][E_GANG_ZONE_COLOR]);
+			GangZoneStopFlashForPlayer(i, g_DynamicZone[zoneid][E_GANG_ZONE_ID]);
 			DeletePVar(i, PVarFlashing);
 		}
 	}
