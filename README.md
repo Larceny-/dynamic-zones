@@ -12,4 +12,4 @@ dynamic-zones
 
 ***
 
-**It's highly recommended that you define the maximum gangzone limits to the value you are current to save memory and increase loop speed!**
+**It's highly recommended that you define the maximum gangzone limits to the value you are current using to save memory and increase loop speed!**
