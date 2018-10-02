@@ -1,0 +1,9 @@
+{
+	"user": "Wuzi",
+	"repo": "dynamicgz",
+	"entry": "gz_creator.pwn",
+	"output": "gz_creator.amx",
+	"dependencies": [
+		"sampctl/samp-stdlib"
+	]
+}
