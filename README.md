@@ -12,7 +12,7 @@ main()
     gZone = CreateDynamicZone(1755.348144, -2113.468750, 1845.54753, -2054.13245, COLOR_BLUE);
 }
 
-// Called when a player enters the zone.
+// Called when a player enters a zone.
 public OnPlayerEnterDynamicZone(playerid, zoneid)
 {
     // Check for the zone.
@@ -31,7 +31,7 @@ public OnPlayerEnterDynamicZone(playerid, zoneid)
     return 1;
 }
 
-// Called when the player drink from the can.
+// Called when a player leaves a zone.
 public OnPlayerLeaveDynamicZone(playerid, zoneid)
 {
     // Check for the zone.
@@ -39,7 +39,6 @@ public OnPlayerLeaveDynamicZone(playerid, zoneid)
     {
         case gZone:
         {
-            // Check if the player was allowed to enter the zone
             if(IsPlayerAdmin(playerid))
             {
                 SendClientMessage(playerid, COLOR_ADMIN, "* You left the zone, come back soon!");
